@@ -1,0 +1,8 @@
+Q1: What is the Terraform state file used for?
+The Terraform state file (terraform.tfstate) is a JSON file that acts as the "source of truth" for your infrastructure. It maps the resources defined in your code to the actual resources currently running in the cloud. It allows Terraform to track metadata and improve performance when managing large infrastructures.
+
+Q2: Why is storing state locally risky in a team environment?
+Storing state locally is risky because it creates a "silo" where only one person has the current map of the infrastructure. If another team member tries to run Terraform, they will lack the current state, leading to "state drift" or the accidental creation of duplicate resources. It also lacks "State Locking," which prevents two people from corrupting the file by running commands at the same time.
+
+Q3: What is a remote backend?
+A remote backend is a centralized, shared storage location (like an Amazon S3 bucket) where the state file is stored in the cloud. It enables team collaboration, provides a single source of truth, and supports state locking to ensure infrastructure stability during updates.
