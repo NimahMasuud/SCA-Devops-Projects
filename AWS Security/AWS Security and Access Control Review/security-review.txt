@@ -1,0 +1,29 @@
+AWS Security Assessment and Remediation Report
+
+Executive Summary
+This report evaluates a critically insecure AWS environment currently utilizing a single root account, unrestricted SSH access, and public S3 storage. These practices represent a severe departure from the AWS Well-Architected Framework, specifically the Security Pillar. This review identifies the immediate risks and provides a roadmap for transitioning to a "Least Privilege" model to protect company assets and data integrity.
+
+1. The Critical Risk of Root Account Usage
+The most glaring vulnerability is the daily use of the AWS root account. The root user is the only identity in an AWS environment that has permanent, irrevocable power over every resource, including billing and account deletion.
+The Problem: Using root for daily operations means that a single lost password or a successful phishing attack results in total account takeover. There is no way to restrict root permissions.
+The Fix: We must immediately enable Multi-Factor Authentication (MFA) on the root account and "lock it away." For daily operations, we will implement Identity and Access Management (IAM). Each team member will receive their own IAM user account with permissions restricted to only the services they need to perform their jobs.
+If our root account were compromised, the feeling would be one of total helplessness. An attacker could lock us out of our own business, delete years of work in seconds, and potentially ruin the company's financial future by launching expensive resources. It is the ultimate nightmare for any administrator, as there is no safety net once the root credentials are lost.
+
+2. Securing the Perimeter: SSH Access
+The current configuration allows SSH access (Port 22) from 0.0.0.0/0. In cloud security, this is known as an "open door" policy.
+The Problem: By opening Port 22 to the entire internet, the company is inviting "brute-force" attacks where bots attempt thousands of login combinations every minute.
+The Fix: We will modify the Security Group rules to restrict SSH access. Instead of "Anywhere," the source will be changed to a Specific IP Address (the office CIDR block). This ensures that even if an attacker has a valid SSH key, they cannot attempt a connection unless they are physically on the company network.
+
+3. Data Protection: S3 Bucket Security
+Storing backups in S3 without access controls is a high-risk practice that often leads to massive data leaks.
+The Problem: Public S3 buckets are indexed by scanners. If backups contain customer data or configuration files, they are currently visible to the public web.
+The Fix: We must enable S3 Block Public Access at the account level. Furthermore, we will implement Bucket Policies that explicitly allow access only to specific IAM Roles assigned to our EC2 instances. This ensures that data is only accessible by the applications that require it, not by the public internet.
+In the modern tech world, trust is a startup's most valuable currency. If a customer hears that their private data was exposed because of a basic security mistake like an open S3 bucket, they will leave immediately. Recovering from a public data breach is often more expensive than the security tools themselves, both in legal fees and lost brand reputation. Privacy must be built-in from day one to ensure long-term viability.
+
+4. Accountability and Identity Management
+Sharing a single login across a team is a major failure in administrative "Accountability."
+The Problem: If a critical server is deleted or a database is wiped, the AWS CloudTrail logs will only show that the "Shared User" performed the action. There is no way to identify which individual was responsible, making it impossible to perform a root-cause analysis or prevent future mistakes.
+The Fix: We will adopt a "One Person, One Identity" rule. By using individual IAM users, we gain a full audit trail. We can see exactly who accessed what and when, which is a requirement for almost all modern security compliance standards (like SOC2 or GDPR).
+
+Conclusion
+The current "shared and open" model is unsustainable for any growth-oriented startup. By implementing IAM users, restricting Security Groups, and securing S3 storage, we shift from a reactive security posture to a proactive one. These changes provide the foundation for a secure, auditable, and professional cloud environment.
