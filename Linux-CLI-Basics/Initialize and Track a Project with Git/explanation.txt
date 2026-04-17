@@ -1,0 +1,8 @@
+Staging means telling Git which files you want to include in your next 
+commit. You do this with "git add". 
+
+Committing means saving that snapshot permanently with a message. 
+You do this with "git commit -m". 
+
+Think of staging as putting items in a box, and committing as sealing 
+and labeling the box forever.
