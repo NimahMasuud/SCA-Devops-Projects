@@ -1,0 +1,28 @@
+Architecture Proposal: Secure and Scalable Web Hosting on AWS
+
+Executive Summary
+This proposal outlines a cloud-native architecture for a startup seeking to host a web application for a global customer base across two countries. By leveraging the Amazon Web Services (AWS) global infrastructure, this design prioritizes high availability, security, and cost-efficiency, ensuring the application can scale seamlessly as the business grows.
+
+Cloud Computing Benefits
+According to the AWS Cloud Value Framework, moving to the cloud offers several key advantages over traditional on-premises hosting. First is Trade Capital Expense for Variable Expense; the startup avoids massive upfront costs for hardware. Second is Economies of Scale, where AWS provides lower pay-as-you-go prices. Most importantly, the cloud provides Agility and Elasticity, allowing the startup to deploy resources in minutes and scale them automatically based on user demand in both target countries.
+
+AWS Regions and Availability Zones
+To ensure the application remains "Highly Available," this architecture is deployed within a single AWS Region but spans across two Availability Zones (AZs). As defined in AWS Global Infrastructure documentation, AZs are separate data centers with independent power and cooling. By running EC2 instances in both AZ 1 and AZ 2, the application is protected against a single point of failure. If one data center experiences an outage, traffic is automatically handled by the server in the other zone.
+
+Compute and Storage: EC2 and S3
+For the application’s compute power, we use Amazon EC2 (Elastic Compute Cloud). These virtual servers are configured to handle the web traffic. For storage, we utilize Amazon S3 (Simple Storage Service).
+
+Static Assets: S3 is used to host images and videos, reducing the load on our EC2 servers.
+Backups: According to the Amazon S3 User Guide, the service offers "11 nines" (99.999999999%) of durability, making it the ideal choice for storing critical database backups and application code snapshots.
+
+Security and Access Control
+Security is integrated at every layer following the AWS Shared Responsibility Model:
+
+IAM Users vs. Roles: We will use IAM Users for developers with MFA enabled. However, for the EC2 instances themselves, we will use IAM Roles. This allows the servers to securely access S3 without storing long-term passwords or "Secret Keys" on the server, which is an AWS security best practice.
+
+Security Groups: These act as virtual firewalls. Our Security Group is configured to only allow inbound traffic on Port 80 (HTTP) and Port 443 (HTTPS). All other ports are blocked to prevent unauthorized access.
+
+SSH Best Practices: To manage servers, we use SSH Key Pairs instead of passwords. In line with AWS Security Best Practices, SSH access (Port 22) is restricted to specific trusted IP addresses rather than being open to the entire internet (0.0.0.0/0).
+
+Conclusion
+This architecture provides a secure, "Always-On" foundation. By using managed services like S3 and multi AZ EC2 deployments, the startup can focus on building its product while AWS manages the underlying infrastructure reliability
