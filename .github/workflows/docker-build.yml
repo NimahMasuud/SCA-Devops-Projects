@@ -21,9 +21,9 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v5
         with:
-          # Pointing to the specific folder where your app and Dockerfile live
-          context: ./python-hello-world
-          file: ./python-hello-world/Dockerfile
+          # This matches your GitHub folder path exactly
+          context: ./Desktop/python-hello-world
+          file: ./Desktop/python-hello-world/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/python-hello-world:latest
