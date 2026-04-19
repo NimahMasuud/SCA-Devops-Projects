@@ -2,7 +2,8 @@ name: Build and Push to Docker Hub
 
 on:
   push:
-    branches: [ "master" ]  # This runs every time you push to the 'main' branch
+    branches: 
+      - task-python-hello-world  # Updated to match your current branch
 
 jobs:
   build-and-push:
@@ -20,9 +21,10 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          # Important: If your Dockerfile is inside 'python-hello-world', 
+          # change context to: ./python-hello-world
+          context: . 
           push: true
-          # This creates the 'latest' tag and a unique tag for this specific version
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/python-hello-world:latest
             ${{ secrets.DOCKER_USERNAME }}/python-hello-world:${{ github.sha }}
