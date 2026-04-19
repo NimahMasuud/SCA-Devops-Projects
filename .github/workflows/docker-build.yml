@@ -3,7 +3,7 @@ name: Build and Push to Docker Hub
 on:
   push:
     branches: 
-      - task-python-hello-world  # Updated to match your current branch
+      - task-python-hello-world
 
 jobs:
   build-and-push:
@@ -21,9 +21,9 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v5
         with:
-          # Important: If your Dockerfile is inside 'python-hello-world', 
-          # change context to: ./python-hello-world
-          context: . 
+          # Pointing to the specific folder where your app and Dockerfile live
+          context: ./python-hello-world
+          file: ./python-hello-world/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/python-hello-world:latest
